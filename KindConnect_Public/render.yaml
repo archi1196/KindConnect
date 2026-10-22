@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: kindconnect-community-welfare
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: SITE_PASSWORD
+        sync: false

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102a22">
+  <meta name="description" content="A student-built community welfare management dashboard for NGO activities and volunteers.">
+  <title>KindConnect | Community Welfare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="KindConnect home">
+      <span class="brand-mark">k<span>+</span></span>
+      <span><strong>kind<span>connect</span></strong><small>COMMUNITY CARE, CONNECTED</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#overview">Overview</a><a href="#activities">Activities</a><a href="#volunteers">Volunteers</a>
+    </nav>
+    <a class="top-cta" href="#activities">Manage activities <span>↗</span></a>
+  </header>
+
+  <main id="home">
+    <section class="section-wrap project-intro reveal" id="project-introduction">
+      <span class="eyebrow dark-eyebrow">ABOUT THIS PROJECT</span>
+      <h2>Digital Community Welfare <em>Management System</em></h2>
+      <p>KindConnect is a student-developed web project created for our societal internship with Hanuman Kind Foundation, Surat. It provides one simple place to record community activities such as Annadaan food distribution, tree plantation, bird feeding, animal welfare, blood donation awareness, and community surveys. The dashboard helps users track activity dates and progress, while the volunteer form collects joining details. Records are saved locally in a database and can be downloaded as an Excel workbook for reporting and review.</p>
+    </section>
+    <section class="hero section-wrap">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span class="pulse-dot"></span> HANUMAN KIND FOUNDATION · SURAT</div>
+        <h1>Small acts.<br><em>Lasting impact.</em></h1>
+        <p class="hero-text">One thoughtful place to organize community activities, coordinate volunteers, and keep every act of kindness moving forward.</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="#activities">Explore dashboard <span>↓</span></a>
+          <a class="text-link" href="#about">Our purpose <span>↗</span></a>
+        </div>
+        <div class="hero-note"><span class="avatar-stack"><i>A</i><i>Y</i><i>T</i><i>I</i></span><span>Built with care by computer engineering students</span></div>
+      </div>
+      <div class="hero-art reveal delay-one" aria-label="Community care illustration">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="sun"></div>
+        <div class="art-card card-leaf"><span>✳</span><small>GROW<br>TOGETHER</small></div>
+        <div class="plant plant-back"><i></i><i></i><b></b></div>
+        <div class="plant plant-front"><i></i><i></i><i></i><b></b></div>
+        <div class="ground"></div>
+        <div class="floating-note"><span class="note-icon">♥</span><span><strong>Kindness in action</strong><small>Every effort counts</small></span></div>
+        <div class="spark spark-one">✦</div><div class="spark spark-two">✧</div>
+      </div>
+    </section>
+
+    <section class="section-wrap stats-section reveal" id="overview">
+      <div class="section-heading">
+        <div><span class="eyebrow dark-eyebrow">THE BIG PICTURE</span><h2>Good work, <em>made visible.</em></h2></div>
+        <p>A simple snapshot of community work recorded in this dashboard.</p>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card stat-green"><div class="stat-top"><span class="stat-icon">▦</span><span class="stat-label">TOTAL ACTIVITIES</span></div><div class="stat-number count-up">{{ stats.activities }}</div><div class="stat-foot">Community initiatives recorded <span>↗</span></div></article>
+        <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-mint">✓</span><span class="stat-label">COMPLETED</span></div><div class="stat-number count-up">{{ stats.completed }}</div><div class="stat-foot">Activities marked complete</div></article>
+        <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-peach">◷</span><span class="stat-label">PENDING</span></div><div class="stat-number count-up">{{ stats.pending }}</div><div class="stat-foot">Activities still to do</div></article>
+        <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-lilac">♧</span><span class="stat-label">VOLUNTEERS</span></div><div class="stat-number count-up">{{ stats.volunteers }}</div><div class="stat-foot">Registered in this system</div></article>
+      </div>
+      <p class="demo-note">10 sample activity records are included for demonstration only. They are marked DEMO RECORD in notes; replace them with real records before presenting actual results.</p>
+    </section>
+
+    <section class="section-wrap work-section" id="activities">
+      <div class="section-heading reveal">
+        <div><span class="eyebrow dark-eyebrow">MAKE IT HAPPEN</span><h2>Community <em>activity board.</em></h2></div>
+        <button class="button button-dark" id="openActivityForm" type="button">＋ Add activity</button>
+      </div>
+      <form class="date-export-bar reveal" method="get" action="{{ url_for('index') }}#activities">
+        <div class="date-filter-fields">
+          <label>Start date <input type="date" name="start_date" value="{{ start_date }}"></label>
+          <label>End date <input type="date" name="end_date" value="{{ end_date }}"></label>
+          <button class="button button-dark" type="submit">Apply dates</button>
+          <a class="text-link" href="{{ url_for('index') }}#activities">Clear</a>
+        </div>
+        <a class="button button-green" href="{{ url_for('export_excel', start_date=start_date, end_date=end_date) }}">↓ Export Excel</a>
+      </form>
+      <p class="export-hint">Choose a date range to view matching activities and export them to Excel. The workbook also includes all volunteer registrations in a separate sheet.</p>
+      <div class="toolbar reveal">
+        <label class="search-box"><span>⌕</span><input id="activitySearch" type="search" placeholder="Search activities or locations..." aria-label="Search activities"></label>
+        <div class="filter-pills" role="group" aria-label="Filter activities">
+          <button class="filter-pill active" data-filter="All">All</button>
+          <button class="filter-pill" data-filter="Pending">Pending</button>
+          <button class="filter-pill" data-filter="In Progress">In progress</button>
+          <button class="filter-pill" data-filter="Completed">Completed</button>
+        </div>
+      </div>
+
+      <div class="activity-layout">
+        <div class="activity-list" id="activityList">
+          {% for a in activities %}
+          <article class="activity-row reveal" data-status="{{ a.status }}" data-search="{{ (a.title ~ ' ' ~ a.activity_type ~ ' ' ~ a.location ~ ' ' ~ a.volunteer)|lower }}">
+            <div class="activity-symbol symbol-{{ loop.index0 % 4 }}">
+              {% if 'Food' in a.activity_type %}♡{% elif 'Tree' in a.activity_type %}♧{% elif 'Bird' in a.activity_type %}⌁{% elif 'Animal' in a.activity_type %}♥{% elif 'Blood' in a.activity_type %}✚{% else %}✳{% endif %}
+            </div>
+            <div class="activity-main">
+              <div class="activity-meta"><span>{{ a.activity_type }}</span><span>·</span><span>{{ a.activity_date }}</span></div>
+              <h3>{{ a.title }}</h3>
+              <p class="activity-location">⌖ {{ a.location }}{% if a.volunteer %}<span> · </span>{{ a.volunteer }}{% endif %}</p>
+              {% if a.notes %}<p class="activity-notes">{{ a.notes }}</p>{% endif %}
+            </div>
+            <div class="activity-controls">
+              <span class="status status-{{ a.status|lower|replace(' ', '-') }}">{{ a.status }}</span>
+              <form method="post" action="{{ url_for('update_status', activity_id=a.id) }}" class="status-form">
+                <select name="status" aria-label="Update status for {{ a.title }}" onchange="this.form.submit()">
+                  {% for s in ['Pending', 'In Progress', 'Completed'] %}<option value="{{ s }}" {% if a.status == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+                </select>
+              </form>
+              <form method="post" action="{{ url_for('delete_activity', activity_id=a.id) }}" onsubmit="return confirm('Delete this activity?')">
+                <button class="icon-button delete-button" title="Delete activity" aria-label="Delete {{ a.title }}">×</button>
+              </form>
+            </div>
+          </article>
+          {% endfor %}
+          <div class="empty-state" id="emptyState" hidden><span>✳</span><h3>No activities found</h3><p>Try another search or add a new activity.</p></div>
+        </div>
+
+        <aside class="side-panel reveal">
+          <div class="side-panel-head"><span class="eyebrow dark-eyebrow">QUICK ADD</span><span class="mini-spark">✦</span></div>
+          <h3>Make a little<br><em>difference today.</em></h3>
+          <p>Add an activity and keep your community work organized in one place.</p>
+          <button class="button button-green full-button" id="quickAdd" type="button">Create an activity <span>＋</span></button>
+          <div class="side-divider"></div>
+          <div class="mini-info"><span class="mini-info-icon">♧</span><div><strong>Care for nature</strong><small>Plant, water, nurture.</small></div></div>
+          <div class="mini-info"><span class="mini-info-icon peach-mini">♡</span><div><strong>Care for people</strong><small>Serve with compassion.</small></div></div>
+          <div class="mini-info"><span class="mini-info-icon lilac-mini">✧</span><div><strong>Care together</strong><small>Every volunteer matters.</small></div></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-wrap volunteer-section" id="volunteers">
+      <div class="volunteer-intro reveal">
+        <span class="eyebrow">PEOPLE MAKE THE DIFFERENCE</span>
+        <h2>Kindness needs<br><em>a community.</em></h2>
+        <p>Register a volunteer to help coordinate future community welfare activities.</p>
+        <div class="volunteer-quote">“Alone we can do so little; together we can do so much.”<small>— A reminder to work together</small></div>
+      </div>
+      <div class="volunteer-form-card reveal delay-one">
+        <div class="form-card-heading"><span class="form-icon">♧</span><div><h3>Join the volunteer list</h3><p>Enter the details below to register.</p></div></div>
+        <form action="{{ url_for('add_volunteer') }}" method="post" class="form-grid">
+          <label>Full name <input name="name" required maxlength="100" placeholder="e.g. Aditi Patel"></label>
+          <label>Email address <input name="email" type="email" required maxlength="150" placeholder="you@example.com"></label>
+          <label>Phone number <input name="phone" type="tel" maxlength="20" placeholder="Optional"></label>
+          <label>Area of interest
+            <select name="interest">
+              <option value="">Choose an interest</option><option>Food distribution</option><option>Tree plantation</option><option>Animal welfare</option><option>Bird feeding & water</option><option>Blood donation awareness</option><option>Community surveys</option><option>Any activity</option>
+            </select>
+          </label>
+          <button class="button button-dark full-button form-submit" type="submit">Register volunteer <span>↗</span></button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section-wrap about-section" id="about">
+      <div class="about-card reveal">
+        <div class="about-mark">hk<span>f</span></div>
+        <div class="about-copy"><span class="eyebrow dark-eyebrow">ABOUT THE ORGANIZATION</span><h2>Hanuman Kind Foundation</h2><p>A Section 8 charitable organization in Surat working on humanitarian service, community welfare, environmental conservation, and animal welfare.</p><div class="about-tags"><span>Community care</span><span>Environment</span><span>Animal welfare</span></div></div>
+        <div class="about-contact"><span>REGISTERED OFFICE</span><p>Plot No. 9, Kadampalli Society,<br>Nanpura, Surat – 395001,<br>Gujarat, India</p><span>CONTACT</span><p>hanumankindfoundation@gmail.com</p><p>+91 9574741560</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-top"><div class="footer-brand"><span class="brand-mark">k<span>+</span></span><div><strong>kindconnect</strong><small>Technology with a human touch.</small></div></div><a href="#home" class="back-top">Back to top ↑</a></div>
+    <div class="credits">
+      <div><span class="credit-label">PROJECT DEVELOPED BY</span><p>Archi Patel · Yesha Chevli<br>Tisha Patel · Isha Patel</p><small>Computer Engineering Students<br>C. K. Pithawalla College of Engineering & Technology, Surat</small></div>
+      <div><span class="credit-label">WITH GRATITUDE</span><p>Thank you, Hanuman Kind Foundation, our faculty guide, volunteers, and community members for the guidance and opportunity to learn through service.</p></div>
+    </div>
+    <div class="footer-bottom"><span>© <span id="year"></span> KindConnect · Student project</span><span>Made with ♡ for community welfare</span></div>
+  </footer>
+
+  <dialog id="activityDialog" class="activity-dialog">
+    <div class="dialog-head"><div><span class="eyebrow dark-eyebrow">NEW COMMUNITY RECORD</span><h2>Add an <em>activity.</em></h2></div><button class="icon-button" id="closeActivityForm" aria-label="Close form">×</button></div>
+    <form action="{{ url_for('add_activity') }}" method="post" class="dialog-form">
+      <label>Activity title *<input name="title" required maxlength="150" placeholder="e.g. Weekend tree watering"></label>
+      <label>Activity type *
+        <select name="activity_type" required>{% for t in activity_types %}<option>{{ t }}</option>{% endfor %}</select>
+      </label>
+      <div class="form-two"><label>Location *<input name="location" required maxlength="150" placeholder="Area or locality"></label><label>Date *<input type="date" name="activity_date" required value="{{ today }}"></label></div>
+      <label>Volunteer or team<input name="volunteer" maxlength="100" placeholder="Person or team responsible"></label>
+      <label>Notes<textarea name="notes" rows="3" maxlength="500" placeholder="Short description or task details"></textarea></label>
+      <button class="button button-green full-button" type="submit">Save activity <span>↗</span></button>
+    </form>
+  </dialog>
+
+  <div class="toast-stack" aria-live="polite">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="toast toast-{{ category }}">{{ message }}<button onclick="this.parentElement.remove()" aria-label="Dismiss message">×</button></div>{% endfor %}
+    {% endwith %}
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
